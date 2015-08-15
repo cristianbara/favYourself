@@ -1,0 +1,207 @@
+<!doctype html>
+<html ng-app="favYourself">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Fav Youself</title>
+    <script src="js/jquery-1.11.2.js"></script>
+    <script src="js/angular.js"></script>
+    <script src="js/ngStorage.js"></script>
+    <!-- Material Design Lite -->
+    <script src="js/material.min.js"></script>
+    <link rel="stylesheet" href="css/material.min.css">
+    <!-- Material Design icon font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!--<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+       
+    </style>
+</head>
+
+<body style="" ng-controller="favYourselfController">
+    <div class="mdl-background">
+        <img ng-src="{{ backgroundImages[index] }}" style="z-index: 0;">
+    </div>
+
+    <div class="mdl-tabs__panel--transparent" style="z-index: 2; ">
+
+        <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect ">
+
+            <div class="mdl-tabs__tab-bar mdl-tabs__tab-bar-opaque">
+                <a href="#today-panel" class="mdl-tabs__tab is-active">Home</a>
+                <a id="stats-tab" href="#stats-panel" class="mdl-tabs__tab">Stats</a>
+            </div>
+
+
+            <div class="mdl-tabs__panel  is-active" id="today-panel">
+
+                <div class="rating">
+                    <i id="star-zero" class='material-icons icon-star hidden' ng-click="setStars(0)">star_border</i>
+                    <i id="star-one" class='material-icons icon-star' ng-click="setStars(1)">star_border</i>
+                    <i id="star-two" class='material-icons icon-star star-two' ng-click="setStars(2)">star_border</i>
+                    <i id="star-three" class='material-icons icon-star star-three' ng-click="setStars(3)">star_border</i>
+                    <i id="star-four" class='material-icons icon-star' ng-click="setStars(4)">star_border</i>
+                    <i id="star-five" class='material-icons icon-star' ng-click="setStars(5)">star_border</i>
+                </div>
+
+                <div class="why-text mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
+                    <input class="mdl-textfield__input" type="text" id="because" ng-model="newFavTitle" />
+                    <label class="mdl-textfield__label" for="because">Because...</label>
+                </div>
+
+                <!-- FAB button with ripple -->
+                <button class="button-done mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" ng-click="addFav()">
+                    <i class="material-icons">done</i>
+                </button>
+
+            </div>
+
+
+
+            <div class="mdl-tabs__panel" id="stats-panel">
+                <!-- stats tab -->
+
+                <div class="mdl-card mdl-shadow--2dp demo-card-square" ng-repeat=" fav in favList" id="{{ fav.favId }}">
+
+                    <div class="mdl-card__title mdl-card--expand">
+                        <h2 class="mdl-card__title-text"> {{ fav.title }}                         
+                    </h2>
+                    </div>
+                    <div class="mdl-card__actions mdl-card--border">
+                        <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-button__delete-fav" ng-click="deleteFav($index)">
+                            <i class="material-icons" style="">delete</i>
+                        </a>
+
+                        {{ fav.date }}
+
+                        <div class="mdl-layout-spacer"></div>
+                        <i class="material-icons yellow  mdl-badge" data-badge="{{ fav.stars }}">star</i>
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <img src="res/app/logo.png" style="position: fixed; left: 1%; top: 1%; width: 32px; height: 32px; display: block; z-index:2;">
+
+</body>
+<script>
+    
+    $(document).ready(function () {
+        var clickedStar = -1;
+        // changes the style of the chosen stars on click/tap
+        // function written by Adam (http://codepen.io/MrJadaml/pen/rVmqVP/)
+        $('.icon-star').click(function () {
+            clickedStar = $(this).index();
+            $('.choice').removeClass('choice');
+            $('.not-choice').removeClass('not-choice');
+
+            $('.icon-star').each(function (index, star) {
+                if (index <= clickedStar) {
+                    $('.icon-star').eq(index).toggleClass('choice').html('star');
+                } else {
+                    $('.icon-star').eq(index).toggleClass('not-choice').html('star_border');
+                };
+            });
+        });
+
+    });
+
+    angular.module('favYourself', ['ngStorage'])
+        .controller('favYourselfController', function ($timeout, $scope, $localStorage) {
+    
+            // inititalize background image set. 
+            // images were picked out from https://unsplash.com/
+            $scope.backgroundImages = [
+                'res/app/photo-baloons.jpg',
+                'res/app/photo-valey.jpg',
+                'res/app/photo-darkforest.jpg',
+                'res/app/photo-city.jpg',
+                'res/app/photo-autumn.jpg',
+                'res/app/photo-surf.jpg'
+
+            ];
+            
+            // changes the background image of the app after every fav is recorded
+            $scope.newBackgroundImage = function () {
+                // random number between 0 and $scope.backgroundImages.length
+                var idx = $scope.index + 1;
+                if (idx >= $scope.backgroundImages.length) idx = 0;
+
+                $scope.index = idx;
+                $localStorage.index = idx;
+
+                console.log($scope.backgroundImages.length + "  from which " + idx);
+
+                //return $scope.backgroundImages[idx];
+            };
+
+            if ($localStorage.favList) {
+                $scope.favList = $localStorage.favList;
+            } else {
+                $scope.favList = [];
+            }
+
+            if ($localStorage.index) {
+                $scope.index = $localStorage.index;
+            } else {
+                $scope.index = 1;
+            }
+        
+            // initial star rating is 0
+            $scope.stars = 0;
+            
+            // records the current star rating
+            $scope.setStars = function (num) {
+                $scope.stars = num;
+            };       
+
+            // add a fav in the fav list
+            $scope.addFav = function () {
+                var currentdate = new Date();
+                var id = currentdate.getTime();
+                var datetime = "" + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + "  " + currentdate.getHours() + ":" + currentdate.getMinutes();
+                
+                // record new fav in the first position of the fav list
+                $scope.favList.splice(0, 0,{
+                    favId: id,
+                    title: $scope.newFavTitle,
+                    date: datetime,
+                    stars: $scope.stars
+                });              
+               
+                // save fav list in the local storage
+                $localStorage.favList = $scope.favList;
+
+            // clear interface
+
+                // clear text input
+                $scope.newFavTitle = null;
+                // clear stars
+                $timeout(function () {
+                    angular.element('#star-zero').trigger('click');
+                    $scope.newBackgroundImage();
+                }, 0);
+                
+            //[todo: crossfade background image]
+            };
+        
+            // delete a recorded fav from the fav list
+            $scope.deleteFav = function (idx) {
+                $scope.favList.splice(idx, 1);
+                $localStorage.favList = $scope.favList;
+
+            };
+
+
+        });
+</script>
+
+</html>
