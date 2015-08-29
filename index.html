@@ -13,9 +13,7 @@
     
     <link rel="stylesheet" href="css/style.css">
 
-    <style>
-       
-    </style>
+    
 </head>
 
 <body style="" ng-controller="favYourselfController">
@@ -23,17 +21,17 @@
         <img ng-src="{{ backgroundImages[index] }}" style="z-index: 0;">
     </div>
 
-    <div class="mdl-tabs__panel--transparent" style="z-index: 2; ">
+    <div class="mdl-tabs__panel--transparent" style="z-index: 2;">
 
         <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect ">
 
-            <div class="mdl-tabs__tab-bar mdl-tabs__tab-bar-opaque">
+            <div class="mdl-tabs__tab-bar mdl-tabs__tab-bar-opaque" style="position: fixed; width: 100vw; top: 0; z-index: 2;">
                 <a href="#today-panel" class="mdl-tabs__tab is-active">Home</a>
                 <a id="stats-tab" href="#stats-panel" class="mdl-tabs__tab">Stats</a>
             </div>
 
 
-            <div class="mdl-tabs__panel  is-active" id="today-panel">
+            <div class="mdl-tabs__panel  is-active" id="today-panel" style="margin-top: 59px;">
 
                 <div class="rating">
                     <i id="star-zero" class='material-icons icon-star hidden' ng-click="setStars(0)">star_border</i>
@@ -58,7 +56,7 @@
 
 
 
-            <div class="mdl-tabs__panel" id="stats-panel">
+            <div class="mdl-tabs__panel" id="stats-panel" style="margin-top: 59px;">
                 <!-- stats tab -->
 
                 <div class="mdl-card mdl-shadow--2dp demo-card-square" ng-repeat=" fav in favList" id="{{ fav.favId }}">
@@ -87,7 +85,7 @@
         </div>
     </div>
 
-    <img src="res/app/logo.png" style="position: fixed; left: 1%; top: 1%; width: 32px; height: 32px; display: block; z-index:2;">
+    <img src="res/app/logo.png" style="position: fixed; left: 1%; top: 1%; width: 32px; height: 32px; display: block; z-index:3;">
 
 </body>
 <script>
