@@ -1,6 +1,6 @@
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="io.cristianbara.github.favyourself" version="1.0.0">
   <name>FavYourself</name>
-  <description>Mark you achievements with this simple app. Record the memorable moments in which you feel proud and happy about your doings, whether at work, or in your free time. It's easy. Just write few words to describe your achievement, give it a star mark (five stars is the highest mark) and press the button. The achievement will be recorded in your phone.</description>
+  <description>Mark you achievements with this simple app. Record the memorable moments in which you feel proud and happy about your doings, whether at work, or in your free time. It's easy. Just write few words to describe your achievement, give it a star mark (five stars is the highest mark) and press the button. The achievement will be recorded in your phone.THIS IS A TEST APPLICATION. UPDATES IN THE APPLICATION MAY RESULT IN LOSS OF YOUR RECORDED DATA.</description>
   <author href="http://cristianbara.github.io" email="cristian.dan.bara@gmail.com">CB web dev.</author>
   <content src="index.html"/>
   <preference name="permissions" value="none"/>
