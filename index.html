@@ -127,7 +127,7 @@
             
             // changes the background image of the app after every fav is recorded
             $scope.newBackgroundImage = function () {
-                // random number between 0 and $scope.backgroundImages.length
+                // increment the image index
                 var idx = $scope.index + 1;
                 if (idx >= $scope.backgroundImages.length) idx = 0;
 
