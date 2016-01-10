@@ -165,18 +165,18 @@
                 var id = currentdate.getTime();
                 var datetime = "" + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + "  " + currentdate.getHours() + ":" + currentdate.getMinutes();
 
-                if ($scope.newFavTitle != "") {
-                    // record new fav in the first position of the fav list
-                    $scope.favList.splice(0, 0, {
-                        favId: id,
-                        title: $scope.newFavTitle,
-                        date: datetime,
-                        stars: $scope.stars
-                    });
 
-                    // save fav list in the local storage
-                    $localStorage.favList = $scope.favList;
-                }
+                // record new fav in the first position of the fav list
+                $scope.favList.splice(0, 0, {
+                    favId: id,
+                    title: $scope.newFavTitle,
+                    date: datetime,
+                    stars: $scope.stars
+                });
+
+                // save fav list in the local storage
+                $localStorage.favList = $scope.favList;
+
                 // clear interface
 
                 // clear text input
