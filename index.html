@@ -10,10 +10,10 @@
     <!-- Material Design Lite -->
     <script src="js/material.min.js"></script>
     <link rel="stylesheet" href="css/material.min.css">
-    
+
     <link rel="stylesheet" href="css/style.css">
 
-    
+
 </head>
 
 <body style="" ng-controller="favYourselfController">
@@ -90,7 +90,6 @@
 
 </body>
 <script>
-    
     $(document).ready(function () {
         var clickedStar = -1;
         // changes the style of the chosen stars on click/tap
@@ -113,7 +112,7 @@
 
     angular.module('favYourself', ['ngStorage'])
         .controller('favYourselfController', function ($timeout, $scope, $localStorage) {
-    
+
             // inititalize background image set. 
             // images were picked out from https://unsplash.com/
             $scope.backgroundImages = [
@@ -125,7 +124,7 @@
                 'res/app/photo-surf.jpg'
 
             ];
-            
+
             // changes the background image of the app after every fav is recorded
             $scope.newBackgroundImage = function () {
                 // increment the image index
@@ -151,33 +150,34 @@
             } else {
                 $scope.index = 1;
             }
-        
+
             // initial star rating is 0
             $scope.stars = 0;
-            
+
             // records the current star rating
             $scope.setStars = function (num) {
                 $scope.stars = num;
-            };       
+            };
 
             // add a fav in the fav list
             $scope.addFav = function () {
                 var currentdate = new Date();
                 var id = currentdate.getTime();
                 var datetime = "" + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + "  " + currentdate.getHours() + ":" + currentdate.getMinutes();
-                
-                // record new fav in the first position of the fav list
-                $scope.favList.splice(0, 0,{
-                    favId: id,
-                    title: $scope.newFavTitle,
-                    date: datetime,
-                    stars: $scope.stars
-                });              
-               
-                // save fav list in the local storage
-                $localStorage.favList = $scope.favList;
 
-            // clear interface
+                if ($scope.newFavTitle != "") {
+                    // record new fav in the first position of the fav list
+                    $scope.favList.splice(0, 0, {
+                        favId: id,
+                        title: $scope.newFavTitle,
+                        date: datetime,
+                        stars: $scope.stars
+                    });
+
+                    // save fav list in the local storage
+                    $localStorage.favList = $scope.favList;
+                }
+                // clear interface
 
                 // clear text input
                 $scope.newFavTitle = null;
@@ -186,10 +186,10 @@
                     angular.element('#star-zero').trigger('click');
                     $scope.newBackgroundImage();
                 }, 0);
-                
-            //[todo: crossfade background image]
+
+                //[todo: crossfade background image]
             };
-        
+
             // delete a recorded fav from the fav list
             $scope.deleteFav = function (idx) {
                 $scope.favList.splice(idx, 1);
