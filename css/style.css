@@ -92,7 +92,8 @@
   margin-left: -28px;
   text-align: center;
   background-color: #ffffff;
-  color: #adacac; 
+  /*border: 1px solid forestgreen;*/
+  color: forestgreen; 
 
 }
 

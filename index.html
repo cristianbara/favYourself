@@ -9,16 +9,16 @@
     <script src="js/ngStorage.js"></script>
     <!-- Material Design Lite -->
     <script src="js/material.min.js"></script>
-    <link rel="stylesheet" href="css/material.min.css">
+    <link rel="stylesheet" href="css/material.css">
 
     <link rel="stylesheet" href="css/style.css">
 
 
 </head>
 
-<body style="" ng-controller="favYourselfController">
-    <div class="mdl-background">
-        <img ng-src="{{ backgroundImages[index] }}" style="z-index: 0;">
+<body style="" ng-controller="favYourselfController" ng-cloak>
+    <div class="mdl-background" >
+        <img ng-src="{{ backgroundImages[index] }}" style="z-index: 0;" ng-cloak>
     </div>
 
     <div class="mdl-tabs__panel--transparent" style="z-index: 2;">
@@ -62,10 +62,10 @@
                 <div class="mdl-card mdl-shadow--2dp demo-card-square" ng-repeat=" fav in favList" id="{{ fav.favId }}">
 
                     <div class="mdl-card__title mdl-card--expand">
-                        <h2 class="mdl-card__title-text"> {{ fav.title }}                         
+                        <h2 class="mdl-card__title-text" ng-cloak> {{ fav.title }}                         
                     </h2>
                     </div>
-                    <div class="mdl-card__actions mdl-card--border">
+                    <div class="mdl-card__actions mdl-card--border" ng-cloak>
                         <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-button__delete-fav" ng-click="deleteFav($index)">
                             <i class="material-icons" style="">delete</i>
                         </a>
@@ -73,7 +73,7 @@
                         {{ fav.date }}
 
                         <div class="mdl-layout-spacer"></div>
-                        <span style="font-size: 24px; font-weight: 500; color: #f4b610">{{ fav.stars }}</span>
+                        <span style="font-size: 24px; font-weight: 500; color: #f4b610" ng-cloak>{{ fav.stars }}</span>
                         <i class="material-icons yellow">star</i>
                     </div>
 
@@ -116,13 +116,36 @@
             // inititalize background image set. 
             // images were picked out from https://unsplash.com/
             $scope.backgroundImages = [
-                'res/app/photo-baloons.jpg',
-                'res/app/photo-valey.jpg',
-                'res/app/photo-darkforest.jpg',
-                'res/app/photo-city.jpg',
-                'res/app/photo-autumn.jpg',
-                'res/app/photo-surf.jpg'
-
+               
+                'res/app/photo-0.jpg',
+                'res/app/photo-1.jpg',
+                'res/app/photo-2.jpg',
+                'res/app/photo-3.jpg',
+                'res/app/photo-4.jpg',
+                'res/app/photo-5.jpg',
+                // 'res/app/photo-6.jpg',
+                'res/app/photo-7.jpg',
+                'res/app/photo-8.jpg',
+                // 'res/app/photo-9.jpg',
+                'res/app/photo-10.jpg',
+                'res/app/photo-11.jpg',
+                // 'res/app/photo-12.jpg',
+                'res/app/photo-13.jpg',
+                'res/app/photo-14.jpg',
+                'res/app/photo-15.jpg',
+                'res/app/photo-16.jpg',
+                'res/app/photo-17.jpg',
+                // 'res/app/photo-18.jpg',
+                'res/app/photo-19.jpg',
+                'res/app/photo-20.jpg',
+                'res/app/photo-21.jpg',
+                'res/app/photo-22.jpg',
+                'res/app/photo-23.jpg',
+                'res/app/photo-24.jpg',
+                'res/app/photo-25.jpg',
+                'res/app/photo-26.jpg',
+                'res/app/photo-27.jpg'
+                
             ];
 
             // changes the background image of the app after every fav is recorded
