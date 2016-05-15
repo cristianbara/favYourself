@@ -71,7 +71,7 @@
 .why-text {
     position: absolute;
     font-size: 8em;
-    top: 35%;
+    top: 200px;
     left: 10%;
     color: black;
     text-align: center;
@@ -83,7 +83,7 @@
 .button-done {
     position: absolute;
     font-size: 26px;
-    bottom: 20%;
+    top: 550px;
     left: 50%;
     width: 56px;
     height: 56px;
