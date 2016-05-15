@@ -3,60 +3,87 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="initial-scale=1.0">
+
     <title>Fav Youself</title>
-    <script src="js/jquery-1.11.2.js"></script>
+
+    <link rel="stylesheet" href="css/material.css">
+    <link rel="stylesheet" href="css/material.form.css">
+    <link rel="stylesheet" href="css/style.css">
+
     <script src="js/angular.js"></script>
+    <script src="js/angular-animate.js"></script>
     <script src="js/ngStorage.js"></script>
     <!-- Material Design Lite -->
-    <script src="js/material.min.js"></script>
-    <link rel="stylesheet" href="css/material.css">
+    <!-- <script src="js/material.min.js"></script> -->
 
-    <link rel="stylesheet" href="css/style.css">
+    <script src='js/app.js'>
+    </script>
 
 
 </head>
 
 <body style="" ng-controller="favYourselfController" ng-cloak>
-    <div class="mdl-background" >
-        <img ng-src="{{ backgroundImages[index] }}" style="z-index: 0;" ng-cloak>
+    <div class="mdl-background">
+        <img ng-src="{{ backgroundImageSrc }}" style="z-index: 0;" ng-class="animate-show">
     </div>
 
     <div class="mdl-tabs__panel--transparent" style="z-index: 2;">
 
-        <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect ">
-
-            <div class="mdl-tabs__tab-bar mdl-tabs__tab-bar-opaque" style="position: fixed; width: 100vw; top: 0; z-index: 2;">
-                <a href="#today-panel" class="mdl-tabs__tab is-active">Home</a>
-                <a id="stats-tab" href="#stats-panel" class="mdl-tabs__tab">Stats</a>
+        <div class="">
+            <div style="position: fixed; width: 100vw; height:50px; top: 0; z-index: 2; background: white; text-align: center">
+                <img src="res/app/logo.png" style="position:relative; float:left; margin-left: 8px; margin-top: 7px; margin-bottom: 5px; width: 32px; height: 32px; display: block;">
+                <div style="display: block; position: absolute; height:50px; left: 50%;transform: translateX(-50%); min-width: 200px;">
+                    <a class="mdl-tabs__tab" ng-class="{underline: homeTab}" ng-click="switchTab(0)">Home</a>
+                    <a class="mdl-tabs__tab" ng-class="{underline: !homeTab}" ng-click="switchTab(1)">Stats</a>
+                </div>
             </div>
 
 
-            <div class="mdl-tabs__panel  is-active" id="today-panel" style="margin-top: 59px;">
+            <div class="mdl-tabs__panel" id="today-panel" style="margin-top: 59px;" ng-show="homeTab">
 
                 <div class="rating">
-                    <i id="star-zero" class='material-icons icon-star hidden' ng-click="setStars(0)">star_border</i>
-                    <i id="star-one" class='material-icons icon-star' ng-click="setStars(1)">star_border</i>
-                    <i id="star-two" class='material-icons icon-star star-two' ng-click="setStars(2)">star_border</i>
-                    <i id="star-three" class='material-icons icon-star star-three' ng-click="setStars(3)">star_border</i>
-                    <i id="star-four" class='material-icons icon-star' ng-click="setStars(4)">star_border</i>
-                    <i id="star-five" class='material-icons icon-star' ng-click="setStars(5)">star_border</i>
+                    <div class="star" ng-click="setStars(1)">
+                        <img width="46" src="res/app/star_border.svg" ng-show="stars < 1">
+                        <img width="46" src="res/app/star_white.svg" ng-show="stars >= 1">
+                    </div>
+                    <div class="star" ng-click="setStars(2)">
+                        <img width="46" src="res/app/star_border.svg" ng-show="stars < 2">
+                        <img width="46" src="res/app/star_white.svg" ng-show="stars >= 2">
+                    </div>
+                    <div class="star" ng-click="setStars(3)">
+                        <img width="46" src="res/app/star_border.svg" ng-show="stars < 3">
+                        <img width="46" src="res/app/star_white.svg" ng-show="stars >= 3">
+                    </div>
+                    <div class="star" ng-click="setStars(4)">
+                        <img width="46" src="res/app/star_border.svg" ng-show="stars < 4">
+                        <img width="46" src="res/app/star_white.svg" ng-show="stars >= 4">
+                    </div>
+                    <div class="star" ng-click="setStars(5)">
+                        <img width="46" src="res/app/star_border.svg" ng-show="stars < 5">
+                        <img width="46" src="res/app/star_white.svg" ng-show="stars >= 5">
+                    </div>
+
                 </div>
 
-                <div class="why-text mdl-textfield mdl-js-textfield mdl-textfield--floating-label textfield-demo">
-                    <input class="mdl-textfield__input" type="text" id="because" ng-model="newFavTitle" />
-                    <label class="mdl-textfield__label" for="because">Because...</label>
+                <div class="why-text group">
+                    <input type="text" required id="because" ng-model="newFavTitle">
+                    <!-- <span class="highlight"></span> -->
+                    <span class="bar"></span>
+                    <label>Because ...</label>
                 </div>
 
                 <!-- FAB button with ripple -->
-                <button class="button-done mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect" ng-click="addFav()">
-                    <i class="material-icons">done</i>
-                </button>
+                <div class="button-done" ng-click="addFav()">
+                    <img width="36" src="res/app/done.svg">
+                </div>
 
             </div>
 
 
 
-            <div class="mdl-tabs__panel" id="stats-panel" style="margin-top: 59px;">
+            <div class="mdl-tabs__panel" id="stats-panel" style="margin-top: 59px;" ng-show="!homeTab">
                 <!-- stats tab -->
 
                 <div class="mdl-card mdl-shadow--2dp demo-card-square" ng-repeat=" fav in favList" id="{{ fav.favId }}">
@@ -67,14 +94,14 @@
                     </div>
                     <div class="mdl-card__actions mdl-card--border" ng-cloak>
                         <a class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon mdl-button__delete-fav" ng-click="deleteFav($index)">
-                            <i class="material-icons" style="">delete</i>
+                            <img width="24" style="stroke: orange; fill: red;" src="res/app/delete.svg">
                         </a>
 
                         {{ fav.date }}
 
                         <div class="mdl-layout-spacer"></div>
                         <span style="font-size: 24px; font-weight: 500; color: #f4b610" ng-cloak>{{ fav.stars }}</span>
-                        <i class="material-icons yellow">star</i>
+                        <img width="24" style="stroke: orange; fill: red;" src="res/app/star_white.svg">
                     </div>
 
                 </div>
@@ -86,142 +113,8 @@
         </div>
     </div>
 
-    <img src="res/app/logo.png" style="position: fixed; left: 1%; top: 1%; width: 32px; height: 32px; display: block; z-index:3;">
+
 
 </body>
-<script>
-    $(document).ready(function () {
-        var clickedStar = -1;
-        // changes the style of the chosen stars on click/tap
-        // function written by Adam (http://codepen.io/MrJadaml/pen/rVmqVP/)
-        $('.icon-star').click(function () {
-            clickedStar = $(this).index();
-            $('.choice').removeClass('choice');
-            $('.not-choice').removeClass('not-choice');
-
-            $('.icon-star').each(function (index, star) {
-                if (index <= clickedStar) {
-                    $('.icon-star').eq(index).toggleClass('choice').html('star');
-                } else {
-                    $('.icon-star').eq(index).toggleClass('not-choice').html('star_border');
-                };
-            });
-        });
-
-    });
-
-    angular.module('favYourself', ['ngStorage'])
-        .controller('favYourselfController', function ($timeout, $scope, $localStorage) {
-
-            // inititalize background image set. 
-            // images were picked out from https://unsplash.com/
-            $scope.backgroundImages = [
-               
-                'res/app/photo-0.jpg',
-                'res/app/photo-1.jpg',
-                'res/app/photo-2.jpg',
-                'res/app/photo-3.jpg',
-                'res/app/photo-4.jpg',
-                'res/app/photo-5.jpg',
-                // 'res/app/photo-6.jpg',
-                'res/app/photo-7.jpg',
-                'res/app/photo-8.jpg',
-                // 'res/app/photo-9.jpg',
-                'res/app/photo-10.jpg',
-                'res/app/photo-11.jpg',
-                // 'res/app/photo-12.jpg',
-                'res/app/photo-13.jpg',
-                'res/app/photo-14.jpg',
-                'res/app/photo-15.jpg',
-                'res/app/photo-16.jpg',
-                'res/app/photo-17.jpg',
-                // 'res/app/photo-18.jpg',
-                'res/app/photo-19.jpg',
-                'res/app/photo-20.jpg',
-                'res/app/photo-21.jpg',
-                'res/app/photo-22.jpg',
-                'res/app/photo-23.jpg',
-                'res/app/photo-24.jpg',
-                'res/app/photo-25.jpg',
-                'res/app/photo-26.jpg',
-                'res/app/photo-27.jpg'
-                
-            ];
-
-            // changes the background image of the app after every fav is recorded
-            $scope.newBackgroundImage = function () {
-                // increment the image index
-                var idx = $scope.index + 1;
-                if (idx >= $scope.backgroundImages.length) idx = 0;
-
-                $scope.index = idx;
-                $localStorage.index = idx;
-
-                console.log($scope.backgroundImages.length + "  from which " + idx);
-
-                //return $scope.backgroundImages[idx];
-            };
-
-            if ($localStorage.favList) {
-                $scope.favList = $localStorage.favList;
-            } else {
-                $scope.favList = [];
-            }
-
-            if ($localStorage.index) {
-                $scope.index = $localStorage.index;
-            } else {
-                $scope.index = 1;
-            }
-
-            // initial star rating is 0
-            $scope.stars = 0;
-
-            // records the current star rating
-            $scope.setStars = function (num) {
-                $scope.stars = num;
-            };
-
-            // add a fav in the fav list
-            $scope.addFav = function () {
-                var currentdate = new Date();
-                var id = currentdate.getTime();
-                var datetime = "" + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + "  " + currentdate.getHours() + ":" + currentdate.getMinutes();
-
-
-                // record new fav in the first position of the fav list
-                $scope.favList.splice(0, 0, {
-                    favId: id,
-                    title: $scope.newFavTitle,
-                    date: datetime,
-                    stars: $scope.stars
-                });
-
-                // save fav list in the local storage
-                $localStorage.favList = $scope.favList;
-
-                // clear interface
-
-                // clear text input
-                $scope.newFavTitle = null;
-                // clear stars
-                $timeout(function () {
-                    angular.element('#star-zero').trigger('click');
-                    $scope.newBackgroundImage();
-                }, 0);
-
-                //[todo: crossfade background image]
-            };
-
-            // delete a recorded fav from the fav list
-            $scope.deleteFav = function (idx) {
-                $scope.favList.splice(idx, 1);
-                $localStorage.favList = $scope.favList;
-
-            };
-
-
-        });
-</script>
 
 </html>

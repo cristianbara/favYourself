@@ -8564,6 +8564,7 @@ _:-ms-input-placeholder, :root .mdl-slider.mdl-slider.is-upgraded {
 
 .mdl-tabs__tab {
   margin: 0;
+    bottom: 0;
   border: none;
   padding: 0 24px 0 24px;
   float: left;
