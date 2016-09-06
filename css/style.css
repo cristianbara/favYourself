@@ -116,7 +116,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: white;
+    background: #dadada;
     overflow: hidden;
 }
 
@@ -212,4 +212,36 @@ body {
 }
 .underline {
     border-bottom: 3px solid #5264AE;
+}
+.fav-yourself-header {
+    position: fixed; width: 100vw; height:50px; top: 0; z-index: 2; background: white; text-align: center;
+}
+
+.fav-yourself-logo {
+    position:relative; float:left; margin-left: 8px; margin-top: 7px; margin-bottom: 5px; width: 32px; height: 32px; display: block;
+}
+
+.fav-yourself-tabs-container {
+    display: block; position: absolute; height:50px; left: 50%;transform: translateX(-50%); min-width: 200px;
+}
+
+.background-img {
+    -webkit-transition: opacity .5s; /* For Safari 3.1 to 6.0 */
+    transition: opacity .5s;
+}
+
+.background-img-hide {
+    opacity: 0;
+}
+
+.background-img-show {
+    opacity: 1;
+}
+
+.fav-star-number {
+    font-size: 24px; font-weight: 500; color: #f4b610
+}
+
+#today-panel {
+    margin-top: 59px;
 }

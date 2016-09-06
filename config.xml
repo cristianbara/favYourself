@@ -16,18 +16,7 @@
     <preference name="android-installLocation" value="preferExternal" />
 
     <icon src="icon.png" />
-
-    <gap:plugin name="org.apache.cordova.splashscreen" />
-    <preference name="SplashScreen" value="screen" />
-    <preference name="SplashScreenDelay" value="4000" />
-
-    <gap:splash gap:platform="android" gap:qualifier="port-ldpi" src="splash.png" />
-    <gap:splash gap:platform="android" gap:qualifier="port-mdpi" src="splash.png" />
-    <gap:splash gap:platform="android" gap:qualifier="port-hdpi" src="splash.png" />
-    <gap:splash gap:platform="android" gap:qualifier="port-xhdpi" src="splash.png" />
-
-    <gap:splash src="splash.png" />
-
+    
     <gap:config-file platform="android" parent="/manifest">
         <application android:theme="@android:style/Theme.NoTitleBar">
         </application>

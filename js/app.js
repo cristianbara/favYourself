@@ -1,159 +1,249 @@
-var app = angular.module('favYourself', ['ngStorage', 'ngAnimate'])
-    .controller('favYourselfController', function ($timeout, $scope, $localStorage) {
-        /*
-        * Inititalize variables
-        */ 
-        // set the home tab to show on load
-        $scope.homeTab = true;
+var app = angular.module('favYourself', ['ngRoute', 'ngStorage']);
 
-        // set the stars count to 0
-        $scope.stars = 0;
+app.config(function($routeProvider) {
+    $routeProvider
+        .when('/favInput', {
+                templateUrl: 'partials/favInput.html',
+                controller: 'favInputController'
+              })
+        .when('/favStats', {
+            templateUrl: 'partials/favStats.html',
+            controller: 'favStatsController'      
+        })
+        .otherwise({
+            redirectTo: '/favInput'
+        })
+});
 
-        // inititalize background image set. 
-        // images were picked out from https://unsplash.com/
-        $scope.backgroundImages = [
-            
-                //'res/app/photo-0.jpg',
-                'res/app/photo-1.jpg',
-                'res/app/photo-2.jpg',
-                'res/app/photo-3.jpg',
-                'res/app/photo-4.jpg',
-                'res/app/photo-5.jpg',
-                // 'res/app/photo-6.jpg',
-                'res/app/photo-7.jpg',
-                'res/app/photo-8.jpg',
-                // 'res/app/photo-9.jpg',
-                'res/app/photo-10.jpg',
-                'res/app/photo-11.jpg',
-                // 'res/app/photo-12.jpg',
-                'res/app/photo-13.jpg',
-                'res/app/photo-14.jpg',
-                'res/app/photo-15.jpg',
-                'res/app/photo-16.jpg',
-                'res/app/photo-17.jpg',
-                // 'res/app/photo-18.jpg',
-                'res/app/photo-19.jpg',
-                'res/app/photo-20.jpg',
-                'res/app/photo-21.jpg',
-                'res/app/photo-22.jpg',
-                'res/app/photo-23.jpg',
-                'res/app/photo-24.jpg',
-                'res/app/photo-25.jpg',
-                'res/app/photo-26.jpg',
-                'res/app/photo-27.jpg'
+app.service('tabsService', function () {
+    var tabs = [true, false];
 
-            ];
-
-        $scope.backgroundImageSrc = 'res/app/photo-2.jpg';
-
-        
-        /*
-        * Utility functions
-        */
-        
-        $scope.switchTab = function(num){
-            if(num == 0) {
-                $scope.homeTab = true;
-            } else{
-                $scope.homeTab = false;
-            }
-        };        
-        // changes the background image of the app after every fav is recorded
-        $scope.newBackgroundImage = function () {
-            // increment the image index
-            var idx = $scope.index + 1;
-            if (idx >= $scope.backgroundImages.length) idx = 0;
-
-            $scope.index = idx;
-            $localStorage.index = idx;
-
-            $scope.backgroundImageSrc = $scope.backgroundImages[idx];
-            $localStorage.backgroundImageSrc = $scope.backgroundImageSrc;
-
-            console.log($scope.backgroundImages.length + "  from which " + idx);
-
-            //return $scope.backgroundImages[idx];
-        };
-
-        // records the current star rating
-        $scope.setStars = function (num) {
-            $scope.stars = num;
-            $scope.$applyAsync();
-            console.log("stars equal to: " + $scope.stars);
-        };
-
-        // add a fav in the fav list
-        $scope.addFav = function () {
-            var currentdate = new Date();
-            var id = currentdate.getTime();
-            var datetime = "" + currentdate.getDate() + "/" + (currentdate.getMonth() + 1) + "/" + currentdate.getFullYear() + "  " + currentdate.getHours() + ":" + currentdate.getMinutes();
-
-
-            // record new fav in the first position of the fav list
-            $scope.favList.splice(0, 0, {
-                favId: id,
-                title: $scope.newFavTitle,
-                date: datetime,
-                stars: $scope.stars
-            });
-
-            // save fav list in the local storage
-            $localStorage.favList = $scope.favList;
-
-            // clear interface
-            $scope.newBackgroundImage();
-   
-            // clear text input
-            $scope.newFavTitle = null;
-            // clear stars
-            $scope.stars = 0;
-          
-
-            //reset star count
-            $scope.stars = 0;
-        };
-
-        // delete a recorded fav from the fav list
-        $scope.deleteFav = function (idx) {
-            $scope.favList.splice(idx, 1);
-            $localStorage.favList = $scope.favList;
-
-        };
-        
-        /*
-        * Loading the model from the local storage
-        */
-
-        if ($localStorage.favList) {
-            $scope.favList = $localStorage.favList;
-        } else {
-            $scope.favList = [];
-        }
-
-        if ($localStorage.index) {
-            $scope.index = $localStorage.index;
-        } else {
-            $scope.index = 1;
-        }
-
-        if ($localStorage.backgroundImageSrc) {
-            $scope.backgroundImageSrc = $localStorage.backgroundImageSrc;
-        } else {
-            $scope.backgroundImageSrc = 'res/app/photo-0.jpg';
-        }
-    });
-
-app.directive('fadeIn', function ($timeout) {
     return {
-        restrict: 'A',
-        link: function ($scope, $element, attrs) {
-            $element.addClass("ng-remove");
-            console.log('hide previouse image');
-            $element.on('load', function () {
-                $element.addClass("ng-add");
-                console.log('loaded image');
-
-            });
+        getTabs: function () {
+            return tabs;
+        },
+        setTabs: function (tabList) {
+            tabs = tabList;
+        },
+        showTab: function (idx) {
+            return tabs[idx];
         }
     }
+
+});
+
+app.service('backgroundService', function ($q, $http) {
+    
+    var backgroundImages = [];
+    var imgNr = 0;   
+    var deferred = $q.defer();
+    
+    this.currentBackground = '';
+    this.change = 'background-img-show';
+    
+    this.getImages = function() {
+        return $http.get('res/app/background-list.json')
+            .then(function(response){
+                deferred.resolve(response);
+                return deferred.promise;
+            }, function (response) {
+                deferred.reject(response);
+                return deferred.promise;
+        });
+    };
+        
+    this.setImages = function(imageSet) {
+        backgroundImages = imageSet;
+    }
+    
+    this.setNextImage = function () {
+            imgNr = imgNr + 1;
+            this.currentBackground = backgroundImages[imgNr % backgroundImages.length];
+    };   
+    
+});
+
+app.service('favService', ['$localStorage', function ($localStorage) {
+    var stats = [];
+    
+    return {
+        getStats: function () {
+            if (stats.length) {
+                return stats;
+            } else {
+                stats = $localStorage.favStats;
+                return stats;
+            }
+            
+        },
+        addFav: function (fav) {
+            stats.push(fav);
+            $localStorage.favStats = stats;
+        },
+        deleteFav: function (idx) {
+            stats.splice(idx, 1);
+            $localStorage.favStats = stats;
+        }
+    }
+}]);
+
+app.controller('tabController', function ($scope, tabsService) {
+
+    // the home tab is selected by default
+    $scope.tabs = tabsService.getTabs();
+
+    //reset the tab list
+    $scope.resetTabs = function () {
+        for (var i = 0; i < $scope.tabs.length; i++) {
+            $scope.tabs[i] = false;
+        }
+    };
+
+    $scope.setSelectedTab = function (nr) {
+        $scope.tabs[nr] = true;
+        tabsService.setTabs($scope.tabs);
+    };
+
+    $scope.selectTab = function (tabName) {
+        // reset the tabs selection
+        $scope.resetTabs();
+
+        // set the selected tab
+        switch (tabName) {
+        case 'home':
+            // set the home tab to true
+            $scope.setSelectedTab(0);
+            console.log('switch to HOME');
+            break;
+
+        case 'stats':
+            // set the home tab to true
+            $scope.setSelectedTab(1);
+            console.log('switch to STATS');
+            break;
+        };
+
+    };
+
+
+});
+
+app.controller('backgroundController', function ($scope, $q, backgroundService) {
+   
+    $scope.background = backgroundService;
+    
+    backgroundService.getImages().then(
+        function(response) {
+            console.log(response);
+            backgroundService.setImages(response.data);
+            backgroundService.setNextImage();    
+            $scope.background.currentBackground = backgroundService.currentBackground;  
+        }, function(error) {
+            $scope.background.currentBackground = 'res/app/logo.png';
+            
+        });   
+     
+    
+});
+
+app.controller('favInputController', function ($scope, $timeout, favService, backgroundService) {
+
+    $scope.newFav = {
+        stars: 0,
+        reason: '',
+        date: ''
+    };
+
+    $scope.stars = [
+        {
+            src: 'res/app/star_border.svg'
+         },
+        {
+            src: 'res/app/star_border.svg'
+         },
+        {
+            src: 'res/app/star_border.svg'
+         },
+        {
+            src: 'res/app/star_border.svg'
+         },
+        {
+            src: 'res/app/star_border.svg'
+         }
+
+     ];
+
+    $scope.resetStars = function () {
+        for (var i = 0; i < $scope.stars.length; i++) {
+
+            $scope.stars[i].src = 'res/app/star_border.svg'
+        }
+
+        $scope.newFav.stars = 0;
+    };
+
+    $scope.resetReason = function () {
+        $scope.newFav.reason = '';
+    };
+
+    $scope.setStars = function (idx) {
+
+        $scope.resetStars();
+
+        for (var i = 0; i <= idx; i++) {
+            $scope.stars[i].src = 'res/app/star_white.svg';
+        };
+
+        $scope.newFav.stars = idx+1;
+    };
+    
+    
+
+    $scope.addFav = function () {
+
+        var now = new Date();
+        $scope.newFav.date = now;
+
+        // make a new fav object and call the favService add function
+        var newFav = {
+            stars: $scope.newFav.stars,
+            reason: $scope.newFav.reason,
+            date: $scope.newFav.date
+        };
+
+        favService.addFav(newFav);
+
+        // clear the UI
+        $scope.resetStars();
+        $scope.resetReason();
+
+        //increment the background index
+        // first, hide the <img>
+        backgroundService.change = 'background-img-hide';
+        
+        // second, set the new background src
+        $timeout(function(){            
+            backgroundService.setNextImage();
+        }, 501);
+        
+        // third, show the <img> with the new src
+        $timeout(function(){            
+            backgroundService.change = 'background-img-show';
+        }, 700);        
+        
+        
+    };
+});
+
+app.controller('favStatsController', function ($scope, favService) {
+
+    $scope.favStats = favService.getStats();
+
+    $scope.deleteFav = function (idx) {
+
+        favService.deleteFav(idx);
+
+        $scope.favStats = favService.getStats();
+
+    };
 });

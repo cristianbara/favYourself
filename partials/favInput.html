@@ -1,0 +1,21 @@
+<!-- the app fav input panel -->
+<div class="mdl-tabs__panel" id="today-panel">
+
+    <div class="rating">
+        <div ng-repeat="star in stars" class="star" ng-click="setStars($index)">
+            <img width="46" ng-src="{{ star.src }}">
+        </div>
+    </div>
+
+    <div class="why-text group">
+        <input id="because" type="text" required ng-model="newFav.reason">
+        <span class="bar"></span>
+        <label>Because ...</label>
+    </div>
+
+    <!~~ FAB button with ripple ~~>
+    <div class="button-done" ng-click="addFav()">
+        <img width="36" src="../res/app/done.svg">
+    </div>
+
+</div>
