@@ -34,9 +34,13 @@ app.service('tabsService', function () {
 
 app.service('backgroundService', function ($q, $http) {
     
-    var backgroundImages = [];
-    var imgNr = 0;   
+    var backgroundImages = [];    
     var deferred = $q.defer();
+    
+    var getRandomInt = function(min, max) { // min (integer, inclusive), max (integer, inclusive)
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    
     
     this.currentBackground = '';
     this.change = 'background-img-show';
@@ -56,9 +60,8 @@ app.service('backgroundService', function ($q, $http) {
         backgroundImages = imageSet;
     }
     
-    this.setNextImage = function () {
-            imgNr = imgNr + 1;
-            this.currentBackground = backgroundImages[imgNr % backgroundImages.length];
+    this.setNextImage = function () {           
+            this.currentBackground = backgroundImages[ getRandomInt(0,backgroundImages.length-1)];
     };   
     
 });
