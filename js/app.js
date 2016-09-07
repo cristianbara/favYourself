@@ -39,8 +39,7 @@ app.service('backgroundService', function ($q, $http) {
     
     var getRandomInt = function(min, max) { // min (integer, inclusive), max (integer, inclusive)
     return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-    
+    }    
     
     this.currentBackground = '';
     this.change = 'background-img-show';
@@ -61,26 +60,27 @@ app.service('backgroundService', function ($q, $http) {
     }
     
     this.setNextImage = function () {           
-            this.currentBackground = backgroundImages[ getRandomInt(0,backgroundImages.length-1)];
+            this.currentBackground = backgroundImages[getRandomInt(0,backgroundImages.length-1)];
     };   
     
 });
 
 app.service('favService', ['$localStorage', function ($localStorage) {
     var stats = [];
-    
+    console.log($localStorage.favStats);
     return {
         getStats: function () {
-            if (stats.length) {
+            if (!$localStorage.favStats) {
                 return stats;
             } else {
                 stats = $localStorage.favStats;
+                console.log(stats);
                 return stats;
             }
             
         },
         addFav: function (fav) {
-            stats.push(fav);
+            stats.unshift(fav);
             $localStorage.favStats = stats;
         },
         deleteFav: function (idx) {
@@ -137,7 +137,6 @@ app.controller('backgroundController', function ($scope, $q, backgroundService) 
     
     backgroundService.getImages().then(
         function(response) {
-            console.log(response);
             backgroundService.setImages(response.data);
             backgroundService.setNextImage();    
             $scope.background.currentBackground = backgroundService.currentBackground;  
@@ -205,7 +204,7 @@ app.controller('favInputController', function ($scope, $timeout, favService, bac
     $scope.addFav = function () {
 
         var now = new Date();
-        $scope.newFav.date = now;
+        $scope.newFav.date = now.toLocaleDateString('en-GB');
 
         // make a new fav object and call the favService add function
         var newFav = {
