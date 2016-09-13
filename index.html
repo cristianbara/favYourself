@@ -16,24 +16,24 @@
 
 </head>
 
-<body>
+<body ng-controller="tabController" >
     <div class="mdl-background" ng-controller="backgroundController">
         <img class="background-img {{ background.change }}" ng-src='{{ background.currentBackground }}' style="z-index: 0;">
     </div>
 
-    <div class="mdl-tabs__panel--transparent" style="z-index: 2;" ng-controller="tabController">
+    <div class="mdl-tabs__panel--transparent" style="z-index: 2;" >
 
         <!-- the app header -->
         <div class="fav-yourself-header">
             <img src="res/app/logo.png" class="fav-yourself-logo">
             <div class="fav-yourself-tabs-container">
-                <a class="mdl-tabs__tab" ng-class="{ 'underline': tabs[0] }" ng-click="selectTab('home')" href="#/favInput">Home</a>
+                <a class="mdl-tabs__tab" ng-class="{ 'underline': tabs[0] }" ng-click="selectTab('home')" href="#/favInput" >Home</a>
                 <a class="mdl-tabs__tab" ng-class="{ underline: tabs[1] }" ng-click="selectTab('stats')" href="#/favStats">Stats</a>
             </div>
         </div>
         
         <!-- the app body -->
-        <div class="fav-yourself-body" ng-view>
+        <div class="fav-yourself-body" ng-view >
         </div>
         
     </div>
