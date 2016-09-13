@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
+     <meta name="viewport" content="height=device-height">
     <meta name="viewport" content="initial-scale=1.0">
 
     <title>Fav Youself</title>
@@ -27,8 +28,8 @@
         <div class="fav-yourself-header">
             <img src="res/app/logo.png" class="fav-yourself-logo">
             <div class="fav-yourself-tabs-container">
-                <a class="mdl-tabs__tab" ng-class="{ 'underline': tabs[0] }" ng-click="selectTab('home')" href="#/favInput" >Home</a>
-                <a class="mdl-tabs__tab" ng-class="{ underline: tabs[1] }" ng-click="selectTab('stats')" href="#/favStats">Stats</a>
+                <a class="mdl-tabs__tab" ng-class="{ 'underline': nav.isActive('/favInput')}" href="#/favInput" >Home</a>
+                <a class="mdl-tabs__tab" ng-class="{ underline: nav.isActive('/favStats') }" href="#/favStats">Stats</a>
             </div>
         </div>
         

@@ -15,22 +15,6 @@ app.config(function($routeProvider) {
         })
 });
 
-app.service('tabsService', function () {
-    var tabs = [true, false];
-
-    return {
-        getTabs: function () {
-            return tabs;
-        },
-        setTabs: function (tabList) {
-            tabs = tabList;
-        },
-        showTab: function (idx) {
-            return tabs[idx];
-        }
-    }
-
-});
 
 app.service('backgroundService', function ($q, $http) {
     
@@ -90,42 +74,16 @@ app.service('favService', ['$localStorage', function ($localStorage) {
     }
 }]);
 
-app.controller('tabController', function ($scope, tabsService) {
+app.controller('tabController', function ($scope, $location) {
 
-    // the home tab is selected by default
-    $scope.tabs = tabsService.getTabs();
-
-    //reset the tab list
-    $scope.resetTabs = function () {
-        for (var i = 0; i < $scope.tabs.length; i++) {
-            $scope.tabs[i] = false;
+     $scope.nav = {
+        isActive: function (path) {
+            if (path == $location.path()) {
+                return true;
+            }
+            return false;      
+            
         }
-    };
-
-    $scope.setSelectedTab = function (nr) {
-        $scope.tabs[nr] = true;
-        tabsService.setTabs($scope.tabs);
-    };
-
-    $scope.selectTab = function (tabName) {
-        // reset the tabs selection
-        $scope.resetTabs();
-
-        // set the selected tab
-        switch (tabName) {
-        case 'home':
-            // set the home tab to true
-            $scope.setSelectedTab(0);
-            console.log('switch to HOME');
-            break;
-
-        case 'stats':
-            // set the home tab to true
-            $scope.setSelectedTab(1);
-            console.log('switch to STATS');
-            break;
-        };
-
     };
 
 
